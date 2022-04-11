@@ -395,7 +395,7 @@ convert.CRUNCEP <- function(directory,
     else {
       metvar_table_vars <- metvar_table
     }
-    ed_metheader <- list(list(path_prefix = file.path(directory, "ED_MET_DRIVER_HEADER"),
+    ed_metheader <- list(list(path_prefix = file.path(directory),
                               nlon = length(lon), nlat = length(lat), dx = 0.5, dy = 0.5, xmin = min(lon),
                               ymin = min(lat), variables = rbind(metvar_table_vars,
                                                                  data.frame(variable = "lat",
