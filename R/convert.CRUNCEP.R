@@ -1,7 +1,6 @@
 convert.CRUNCEP <- function(directory,
                             lat,lon,
                             in.prefix = "CRUNCEP",
-                            destination_folder,
                             years,
                             fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt"){
 
@@ -13,8 +12,7 @@ convert.CRUNCEP <- function(directory,
   lon.in <- lon
   lat.in <- lat
 
-  directory <- file.path(outfolder,paste0("site.lat",abs(lat.in),ifelse(lat.in == abs(lat.in),"N","S"),".lon",abs(lon.in),ifelse(lon.in == abs(lon.in),"E","W")))
-
+  directory <- file.path(directory,paste0("site.lat",abs(lat.in),ifelse(lat.in == abs(lat.in),"N","S"),".lon",abs(lon.in),ifelse(lon.in == abs(lon.in),"E","W")))
 
   in.path = directory
   outfolder = file.path(directory)
@@ -43,7 +41,7 @@ convert.CRUNCEP <- function(directory,
   end_date <- as.POSIXlt(end_date, tz = "UTC")
   met_folder <- directory
 
-  results <- data.frame(file = file.path(destination_folder, "ED_MET_DRIVER_HEADER"), host = PEcAn.remote::fqdn(),
+  results <- data.frame(file = file.path(directory, "ED_MET_DRIVER_HEADER"), host = PEcAn.remote::fqdn(),
                         mimetype = "text/plain", formatname = "ed.met_driver_header files format",
                         startdate = start_date, enddate = end_date, dbfile.name = "ED_MET_DRIVER_HEADER",
                         stringsAsFactors = FALSE)
@@ -397,7 +395,7 @@ convert.CRUNCEP <- function(directory,
     else {
       metvar_table_vars <- metvar_table
     }
-    ed_metheader <- list(list(path_prefix = file.path(destination_folder, "ED_MET_DRIVER_HEADER"),
+    ed_metheader <- list(list(path_prefix = file.path(directory, "ED_MET_DRIVER_HEADER"),
                               nlon = length(lon), nlat = length(lat), dx = 0.5, dy = 0.5, xmin = min(lon),
                               ymin = min(lat), variables = rbind(metvar_table_vars,
                                                                  data.frame(variable = "lat",
