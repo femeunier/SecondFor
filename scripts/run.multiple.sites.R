@@ -13,6 +13,8 @@ met.folder <- "/data/gent/vo/000/gvo00074/ED_common_data/met/SecondFor/"
 ref.dir <- "/user/scratchkyukon/gent/gvo000/gvo00074/felicien/SecondFor/"
 
 years <- 2001:2010
+rerun.download <- FALSE
+rerun.convert <- TRUE
 
 site.data <- read.csv("./data/41586_2016_Article_BFnature16512_Figa_ESM.csv") %>% slice_head(n = 5)
 
@@ -44,11 +46,20 @@ for (isite in seq(1,length(lats))){
                 run_name,
                 paste(prefix,years,"nc",sep = "."))))]
 
-  if (length(years2download)>0){
-    download.CRUNCEP(years2download,
-                     lat,lon,
-                     in.prefix = prefix,
-                     met.folder)
+  if (length(years2download)>0 | rerun.download){
+
+    if (rerun.download){
+      download.CRUNCEP(years,
+                       lat,lon,
+                       in.prefix = prefix,
+                       met.folder)
+    } else {
+      download.CRUNCEP(years2download,
+                       lat,lon,
+                       in.prefix = prefix,
+                       met.folder)
+    }
+
   }
 
   years2convert <-
@@ -62,12 +73,22 @@ for (isite in seq(1,length(lats))){
                             paste0(years,"DEC.h5"))) ))]
 
 
-  if (length(years2convert)>0){
-    convert.CRUNCEP(met.folder,
-                    lat,lon,
-                    in.prefix = prefix,
-                    years2convert,
-                    fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt")
+  if (length(years2convert)>0 | rerun.convert){
+
+    if (rerun.convert){
+      convert.CRUNCEP(met.folder,
+                      lat,lon,
+                      in.prefix = prefix,
+                      years,
+                      fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt")
+    } else {
+      convert.CRUNCEP(met.folder,
+                      lat,lon,
+                      in.prefix = prefix,
+                      years2convert,
+                      fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt")
+    }
+
   }
 
 
@@ -124,3 +145,6 @@ dumb <- write_bash_submission(file = file.path(rundir,"all_jobs.sh"),
 
 # scp /home/femeunier/Documents/projects/SecondFor/data/41586_2016_Article_BFnature16512_Figa_ESM.csv hpc:/data/gent/vo/000/gvo00074/felicien/R/data
 # scp /home/femeunier/Documents/projects/SecondFor/scripts/run.multiple.sites.R hpc:/data/gent/vo/000/gvo00074/felicien/R
+
+
+

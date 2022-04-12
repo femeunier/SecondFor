@@ -319,20 +319,24 @@ convert.CRUNCEP <- function(directory,
         }
 
         if (dim(lat) == 1 & dim(lon) == 1){
-          nbdsf <- nbdsfA[selm]
-          nddsf <- nddsfA[selm]
-          vbdsf <- vbdsfA[selm]
-          vddsf <- vddsfA[selm]
-          prate <- prateA[selm]
-          dlwrf <- dlwrfA[selm]
-          pres <- presA[selm]
-          hgt <- hgtA[selm]
-          ugrd <- ugrdA[selm]
-          vgrd <- vgrdA[selm]
-          sh <- shA[selm]
-          tmp <- tmpA[selm]
+
+          nbdsf <- nddsf <- vddsf <- vbdsf <- prate <-
+            dlwrf <- pres <- hgt <- ugrd <- vgrd <- sh <- tmp <- co2 <- array(data = NA,dim = c(length(selm),1,1))
+
+          nbdsf[,1,1] <- nbdsfA[selm]
+          nddsf[,1,1] <- nddsfA[selm]
+          vbdsf[,1,1] <- vbdsfA[selm]
+          vddsf[,1,1] <- vddsfA[selm]
+          prate[,1,1] <- prateA[selm]
+          dlwrf[,1,1] <- dlwrfA[selm]
+          pres[,1,1] <- presA[selm]
+          hgt[,1,1] <- hgtA[selm]
+          ugrd[,1,1] <- ugrdA[selm]
+          vgrd[,1,1]<- vgrdA[selm]
+          sh[,1,1]<- shA[selm]
+          tmp[,1,1]<- tmpA[selm]
           if (useCO2) {
-            co2 <- co2A[selm]
+            co2[,1,1]<- co2A[selm]
           }
 
           Grid.lat <- lat
