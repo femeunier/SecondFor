@@ -12,7 +12,8 @@ convert.CRUNCEP <- function(directory,
   lon.in <- lon
   lat.in <- lat
 
-  directory <- file.path(directory,paste0("site.lat",abs(lat.in),ifelse(lat.in == abs(lat.in),"N","S"),".lon",abs(lon.in),ifelse(lon.in == abs(lon.in),"E","W")))
+  directory <- file.path(directory,
+                         paste0("site.lat",abs(lat.in),ifelse(lat.in == abs(lat.in),"N","S"),".lon",abs(lon.in),ifelse(lon.in == abs(lon.in),"E","W")))
 
   in.path = directory
   outfolder = file.path(directory)
@@ -397,13 +398,7 @@ convert.CRUNCEP <- function(directory,
     }
     ed_metheader <- list(list(path_prefix = file.path(directory),
                               nlon = length(lon), nlat = length(lat), dx = 0.5, dy = 0.5, xmin = min(lon),
-                              ymin = min(lat), variables = rbind(metvar_table_vars,
-                                                                 data.frame(variable = "lat",
-                                                                            update_frequency = 10800,
-                                                                            flag = 2),
-                                                                 data.frame(variable = "lon",
-                                                                            update_frequency = 10800,
-                                                                            flag = 2))))
+                              ymin = min(lat), variables = metvar_table_vars))
 
     # ed_metheader <- list(list(path_prefix = met_folder,
     #                           nlon = length(lon), nlat = length(lat), dx = 0.5, dy = 0.5, xmin = min(lon),
