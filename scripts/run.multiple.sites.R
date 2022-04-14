@@ -14,9 +14,10 @@ ref.dir <- "/user/scratchkyukon/gent/gvo000/gvo00074/felicien/SecondFor/"
 
 years <- 2001:2010
 rerun.download <- FALSE
-rerun.convert <- TRUE
+rerun.convert <- FALSE
+rerun.model <- TRUE
 
-site.data <- read.csv("./data/41586_2016_Article_BFnature16512_Figa_ESM.csv") %>% slice_head(n = 5)
+site.data <- read.csv("./data/41586_2016_Article_BFnature16512_Figa_ESM.csv")
 
 lats <- site.data[["Lat"]]
 lons <- site.data[["Lon"]]
@@ -76,17 +77,25 @@ for (isite in seq(1,length(lats))){
   if (length(years2convert)>0 | rerun.convert){
 
     if (rerun.convert){
-      convert.CRUNCEP(met.folder,
+
+      # directory = met.folder
+      # in.prefix = prefix
+      # lat <- lats[isite]
+      # lon <- lons[isite]
+      # fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt"
+
+      convert.CRUNCEP(directory = met.folder,
                       lat,lon,
                       in.prefix = prefix,
                       years,
                       fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt")
     } else {
-      convert.CRUNCEP(met.folder,
+      convert.CRUNCEP(directory = met.folder,
                       lat,lon,
                       in.prefix = prefix,
                       years2convert,
                       fileCO2 = "./data/CO2_1700_2019_TRENDYv2020.txt")
+
     }
 
   }
@@ -116,25 +125,25 @@ for (isite in seq(1,length(lats))){
   ed2in_scenar$METCYC1 <- min(years)
   ed2in_scenar$METCYCF <- max(years)
 
-
-
   write_ed2in(ed2in_scenar,filename = file.path(run_ref,"ED2IN"))
 
   ####################################################################################
   # job file
 
-  write_job(file = file.path(run_ref,"job.sh"),
-            nodes = 1,ppn = 18,mem = 16,walltime = 24,
-            prerun = "ml purge ; ml intel-compilers/2021.4.0 HDF5/1.12.1-iimpi-2021b UDUNITS/2.2.28-GCCcore-11.2.0; ulimit -s unlimited",
-            CD = run_ref,
-            ed_exec = "/user/scratchkyukon/gent/gvo000/gvo00074/felicien/ED2.2/ED2/ED/build/ed_2.2-opt-master-fa80dab",
-            ED2IN = "ED2IN",
-            Rplot_function = '/data/gent/vo/000/gvo00074/felicien/R/read_and_plot_ED2.2_all_tspft_yearly.r',
-            clean = TRUE,
-            in.line = "ml purge; ml R/4.1.2-foss-2021b")
+  analy.file <- file.path(out_ref,"analy","analysis.RData")
+  if (!file.exists(analy.file) | rerun.model){
+    write_job(file = file.path(run_ref,"job.sh"),
+              nodes = 1,ppn = 18,mem = 16,walltime = 24,
+              prerun = "ml purge ; ml intel-compilers/2021.4.0 HDF5/1.12.1-iimpi-2021b UDUNITS/2.2.28-GCCcore-11.2.0; ulimit -s unlimited",
+              CD = run_ref,
+              ed_exec = "/user/scratchkyukon/gent/gvo000/gvo00074/felicien/ED2.2/ED2/ED/build/ed_2.2-opt-master-fa80dab",
+              ED2IN = "ED2IN",
+              Rplot_function = '/data/gent/vo/000/gvo00074/felicien/R/read_and_plot_ED2.2_all_tspft_yearly.r',
+              clean = TRUE,
+              in.line = "ml purge; ml R/4.1.2-foss-2021b")
 
-  list_dir[[run_name]] <- run_ref
-
+    list_dir[[run_name]] <- run_ref
+  }
 }
 
 

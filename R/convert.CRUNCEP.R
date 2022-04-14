@@ -60,8 +60,7 @@ convert.CRUNCEP <- function(directory,
     if (!leap_year) {
       mo <- findInterval(day, dm)
       return(mo)
-    }
-    else {
+    } else {
       leap <- lubridate::leap_year(year)
       mo[leap] <- findInterval(day[leap], dl)
       mo[!leap] <- findInterval(day[!leap], dm)
@@ -91,8 +90,7 @@ convert.CRUNCEP <- function(directory,
       PEcAn.logger::logger.warn("The following existing target output files will be overwritten:",
                                 paste(sprintf("'%s'", target_out_files[have_target_out_files]),
                                       collapse = ", "))
-    }
-    else {
+    } else {
       have_output_byyear <- split(have_target_out_files,
                                   lubridate::year(month_seq))
       complete_years <- vapply(have_output_byyear, all,
@@ -116,8 +114,7 @@ convert.CRUNCEP <- function(directory,
     }
     if (is.na(lat)) {
       lat <- flat
-    }
-    else if (lat != flat) {
+    } else if (lat != flat) {
       PEcAn.logger::logger.warn("Latitude does not match that of file",
                                 lat, "!=", flat)
     }
@@ -127,8 +124,7 @@ convert.CRUNCEP <- function(directory,
     }
     if (is.na(lon)) {
       lon <- flon
-    }
-    else if (lon != flon) {
+    }   else if (lon != flon) {
       PEcAn.logger::logger.warn("Longitude does not match that of file",
                                 lon, "!=", flon)
     }
@@ -156,8 +152,7 @@ convert.CRUNCEP <- function(directory,
       if (is.numeric(U)) {
         PEcAn.logger::logger.info("eastward_wind and northward_wind are absent, using wind_speed to approximate eastward_wind")
         V <- rep(0, length(U))
-      }
-      else {
+      } else {
         PEcAn.logger::logger.severe("No eastward_wind and northward_wind or wind_speed in the met data")
       }
     }
@@ -194,8 +189,7 @@ convert.CRUNCEP <- function(directory,
         yr <- ytmp
         doy <- dtmp
         hr <- rep(NA, length(dtmp))
-      }
-      else {
+      } else {
         yr <- c(yr, ytmp)
         doy <- c(doy, dtmp)
         hr <- c(hr, rep(NA, length(dtmp)))
@@ -308,13 +302,11 @@ convert.CRUNCEP <- function(directory,
           if (overwrite) {
             file.remove(mout)
             ed_met_h5 <- hdf5r::H5File$new(mout)
-          }
-          else {
+          } else {
             PEcAn.logger::logger.warn("The file already exists! Moving to next month!")
             next
           }
-        }
-        else {
+        } else {
           ed_met_h5 <- hdf5r::H5File$new(mout)
         }
 
@@ -396,8 +388,7 @@ convert.CRUNCEP <- function(directory,
     if (!useCO2) {
       metvar_table_vars <- metvar_table[metvar_table$variable !=
                                           "co2", ]
-    }
-    else {
+    } else {
       metvar_table_vars <- metvar_table
     }
     ed_metheader <- list(list(path_prefix = file.path(directory),

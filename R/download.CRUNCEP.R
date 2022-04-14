@@ -16,13 +16,14 @@ download.CRUNCEP <- function(years,
   sleep = 2
   verbose = FALSE
 
-  var <- tibble::tribble(~DAP.name, ~CF.name, ~units, "tair",
-                         "air_temperature", "Kelvin", "lwdown", "surface_downwelling_longwave_flux_in_air",
-                         "W/m2", "press", "air_pressure", "Pascal", "swdown",
-                         "surface_downwelling_shortwave_flux_in_air", "W/m2",
-                         "uwind", "eastward_wind", "m/s", "vwind", "northward_wind",
-                         "m/s", "qair", "specific_humidity", "g/g", "rain", "precipitation_flux",
-                         "kg/m2/s")
+  var <- tibble::tribble(~DAP.name, ~CF.name, ~units,
+                         "tair","air_temperature", "Kelvin",
+                         "lwdown", "surface_downwelling_longwave_flux_in_air","W/m2",
+                         "press", "air_pressure", "Pascal",
+                         "swdown","surface_downwelling_shortwave_flux_in_air", "W/m2",
+                         "uwind", "eastward_wind", "m/s",
+                         "vwind", "northward_wind","m/s", "qair", "specific_humidity", "g/g",
+                         "rain", "precipitation_flux","kg/m2/s")
 
 
   ylist <- seq(years[1], years[length(years)], by = 1)
